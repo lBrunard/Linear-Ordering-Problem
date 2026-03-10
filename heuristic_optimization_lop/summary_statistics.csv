@@ -1,0 +1,15 @@
+"Config","N","Mean_RPD","SD_RPD","Mean_Time"
+"Insert-First (CW)",78,1.5941,0.332,2.9921
+"VND-TIE (CW)",78,1.645,0.3989,3.2355
+"VND-TEI (CW)",78,1.7911,0.415,4.8561
+"Insert-Best (CW)",78,2.0105,0.4497,0.7916
+"Insert-First (Random)",78,2.0211,0.4507,4.2804
+"Insert-Best (Random)",78,2.3037,0.4635,0.8502
+"Exchange-First (CW)",78,2.5153,0.4147,3.9703
+"Exchange-First (Random)",78,2.8159,0.481,4.8711
+"Exchange-Best (CW)",78,3.2777,0.5489,0.696
+"Exchange-Best (Random)",78,3.6027,0.5048,0.7609
+"Transpose-Best (CW)",78,19.2494,1.8891,0.0058
+"Transpose-First (CW)",78,19.3809,1.9231,0.0032
+"Transpose-Best (Random)",78,34.4701,3.8033,0.007
+"Transpose-First (Random)",78,34.6058,3.7984,0.0042
