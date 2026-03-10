@@ -6,14 +6,18 @@
 library(dplyr)
 library(tidyr)
 
+# Run from project root: Rscript analysis/statistical_tests.R
+BASE <- "/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1"
+setwd(BASE)
+
 # ---- 1. Load data -----------------------------------------------------------
-df_raw <- read.csv("results_summary.csv", sep = ";", header = TRUE,
+df_raw <- read.csv("results/results_summary.csv", sep = ";", header = TRUE,
                    stringsAsFactors = FALSE)
 colnames(df_raw) <- c("Instance", "Init", "NH", "Pivot",
                       "InitCost", "FinalCost", "Time")
 
 # ---- 2. Load best-known solutions ------------------------------------------
-bk_lines <- readLines("best_known/best_known.txt")
+bk_lines <- readLines("code/best_known/best_known.txt")
 bk_lines <- bk_lines[nchar(trimws(bk_lines)) > 0]
 bk_parsed <- lapply(bk_lines, function(l) {
   parts <- strsplit(trimws(l), "\\s+")[[1]]
@@ -75,8 +79,8 @@ summary_tbl <- df %>%
   arrange(Mean_RPD)
 print(as.data.frame(summary_tbl), row.names = FALSE)
 
-write.csv(summary_tbl, "summary_statistics.csv", row.names = FALSE)
-cat("  -> saved to summary_statistics.csv\n")
+write.csv(summary_tbl, "results/summary_statistics.csv", row.names = FALSE)
+cat("  -> saved to results/summary_statistics.csv\n")
 
 # ---- 6. Exercise 1.1 — Wilcoxon tests (all 12 LS algorithms) ---------------
 cat("\n========== EX 1.1 — PAIRWISE WILCOXON TESTS (RPD) ==========\n")
@@ -118,8 +122,8 @@ run_wilcoxon <- function(wide, configs) {
 
 wilcox_ls <- run_wilcoxon(ls_wide, ls_configs)
 print(wilcox_ls, row.names = FALSE)
-write.csv(wilcox_ls, "wilcoxon_ex1_1.csv", row.names = FALSE)
-cat("  -> saved to wilcoxon_ex1_1.csv\n")
+write.csv(wilcox_ls, "results/wilcoxon_ex1_1.csv", row.names = FALSE)
+cat("  -> saved to results/wilcoxon_ex1_1.csv\n")
 
 # ---- 7. Exercise 1.2 — Wilcoxon test VND-TEI vs VND-TIE -------------------
 cat("\n========== EX 1.2 — WILCOXON TEST VND-TEI vs VND-TIE ==========\n")
@@ -145,8 +149,8 @@ if (nrow(vnd_df) > 0) {
                          W=test_vnd$statistic,
                          p.value=round(test_vnd$p.value,4),
                          significant=ifelse(test_vnd$p.value<0.05,"YES *","no")),
-              "wilcoxon_ex1_2.csv", row.names=FALSE)
-    cat("  -> saved to wilcoxon_ex1_2.csv\n")
+              "results/wilcoxon_ex1_2.csv", row.names=FALSE)
+    cat("  -> saved to results/wilcoxon_ex1_2.csv\n")
   } else {
     cat("  VND columns not found in data.\n")
   }
@@ -160,8 +164,8 @@ raw_out <- df %>%
   select(Instance, Init_Label, NH_Label, Pivot_Label, FinalCost, BestKnown, RPD, Time) %>%
   arrange(NH_Label, Pivot_Label, Init_Label, Instance)
 
-write.table(raw_out, "raw_data_for_report.txt",
+write.table(raw_out, "results/raw_data_for_report.txt",
             sep="\t", row.names=FALSE, quote=FALSE)
-cat("  -> saved to raw_data_for_report.txt\n")
+cat("  -> saved to results/raw_data_for_report.txt\n")
 
 cat("\nDone.\n")

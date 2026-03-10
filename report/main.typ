@@ -208,7 +208,7 @@ Almost all differences are statistically significant (p < 0.001). The one intere
 #figure(
   image("plots/plot4_vnd_comparison.png", width: 50%),
   caption: [
-    Average RPD (%) for VND-TEI and VND-TIE. VND-TIE achieves a lower and more consistent RPD. The difference is statistically significant (Wilcoxon test, p = 0.0074).
+    Average RPD (%) for VND-TEI (blue) and VND-TIE (purple), with ± 1 SD error bars. VND-TIE achieves a lower and more consistent RPD. The difference is statistically significant (Wilcoxon test, p = 0.0074).
   ]
 ) <fig:vnd>
 
@@ -247,7 +247,7 @@ Each *iteration* of the local search requires scanning the neighbourhood to find
 #figure(
   image("plots/plot2_quality_vs_time.png", width: 95%),
   caption: [
-    Quality–time for all configurations (Insert, Exchange and VND).
+    Quality–time trade-off for all configurations (Insert, Exchange and VND).
   ]
 ) <fig:pareto>
 
