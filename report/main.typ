@@ -3,7 +3,7 @@
 //  Implementation Exercise 1 — Linear Ordering Problem
 // ============================================================
 #set page(paper: "a4", margin: (top: 2.5cm, bottom: 2.5cm, left: 2.5cm, right: 2.5cm), numbering: "1")
-#set text(font: "Linux Libertine", size: 11pt, lang: "en")
+#set text(font: "New Computer Modern", size: 11pt, lang: "en")
 #set par(justify: true, leading: 0.72em)
 #set heading(numbering: "1.")
 
@@ -94,7 +94,7 @@ We use first-improvement only, starting from the CW solution. Two orderings of t
 
 == Standard deviation and error bars
 
-The *standard deviation* (SD) measures how spread out a set of values is around their average. A small SD means most results are close to the average; a large SD means they vary a lot across instances. In the graphs, the small horizontal segments on each bar are *error bars* showing ± 1 SD. A short bar means the algorithm is consistent; a long bar means results depend heavily on the instance. For example, Insert-First (CW) has mean RPD = 1.59% and SD = 0.33%, so most instances produced results between 1.26% and 1.92% #cite(<wiki_sd>).
+The *standard deviation* (SD) measures how spread out a set of values is around their average. A small SD means most results are close to the average; a large SD means they vary a lot across instances. In the graphs, the small horizontal segments on each bar are *error bars* showing ± 1 SD. A short bar means the algoritm is consistent; a long bar means results depend heavily on the instance. For example, Insert-First (CW) has mean RPD = 1.59% and SD = 0.33%, so most instances produced results between 1.26% and 1.92% #cite(<wiki_sd>).
 
 == Wilcoxon test and p-value
 
@@ -110,19 +110,19 @@ An RPD of 0 means we matched the best-known value. A positive RPD means our solu
 
 == Exercise 1.1 — Iterative Improvement Results
 
-@fig:rpd_bar gives an immediate visual overview of solution quality for the Insert, Exchange and VND configurations (Transpose is excluded from this chart as its RPD of 19–35% would compress the scale). @tab:results11 gives the full numerical results for all 12 configurations.
+@fig:rpd_bar gives an immediate visual overview of solution quality for the Insert, Exchange and VND configurations. @tab:results11 gives the full numerical results for all 12 configurations.
 
 #figure(
   image("plots/plot1_rpd_barchart.png", width: 80%),
   caption: [
-    Average RPD (%) for Insert, Exchange and VND configurations, sorted from best (top) to worst (bottom). Each bar shows the average over 78 instances; the horizontal black segments are *error bars* representing ± 1 standard deviation — they show how much the RPD varies across instances. A short bar means the algorithm behaves consistently; a long bar means performance depends heavily on the instance. The values printed to the right of each error bar are the exact average RPD. Transpose is excluded (RPD 19–35%) to keep the scale readable; it appears in @tab:results11. Colours indicate the neighbourhood: green = Insert, orange = Exchange, blue = VND-TEI, purple = VND-TIE.
+    Average RPD (%) for Insert, Exchange and VND configurations, sorted from best (top) to worst (bottom). Each bar shows the average over 78 instances. Transpose is excluded (RPD 19–35%) to keep the scale readable; it appears in @tab:results11.
   ]
 ) <fig:rpd_bar>
 
 #figure(
   table(
-    columns: (2.6fr, 0.7fr, 0.8fr, 0.8fr, 0.9fr, 1.1fr),
-    inset: 6pt,
+    columns: (2fr, 0.7fr, 0.8fr, 0.8fr, 0.9fr, 1.1fr),
+    inset: 4pt,
     align: (left, center, center, center, center, right),
     fill: (x, y) => if y == 0 { luma(210) }
                     else if y <= 4  { rgb("#d4edda") }
@@ -142,7 +142,7 @@ An RPD of 0 means we matched the best-known value. A positive RPD means our solu
     [Transpose — Best],  [Random], [34.47],[3.80], [0.007],[ 0.55],
     [Transpose — First], [Random], [34.61],[3.80], [0.004],[ 0.33],
   ),
-  caption: [Average RPD (%), standard deviation, and computation times for all 12 configurations over 78 instances. Green = best group, yellow = intermediate, red = transpose (poor quality).]
+  caption: [Average RPD (%), standard deviation, and computation times for all 12 configurations over 78 instances.]
 ) <tab:results11>
 
 === Observations
@@ -184,7 +184,7 @@ Almost all differences are statistically significant (p < 0.001). The one intere
 #figure(
   image("plots/plot3_init_comparison.png", width: 85%),
   caption: [
-    Average RPD (%) for CW initialisation (blue) and random initialisation (red), for each neighbourhood and pivoting rule combination. Error bars show ± 1 SD. For every configuration, the blue bar is lower than the red bar, confirming that the CW starting solution consistently leads to better final solutions.
+    Average RPD (%) for CW initialisation and random initialisation, for each neighbourhood and pivoting rule combination. 
   ]
 ) <fig:init_boxplot>
 

@@ -1,6 +1,3 @@
-# ============================================================
-# Plot generation for LOP report — clean version (no titles/legends in plots)
-# ============================================================
 library(ggplot2)
 library(dplyr)
 library(tidyr)
@@ -9,7 +6,7 @@ setwd("/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1")
 OUT <- "report/plots"
 dir.create(OUT, showWarnings = FALSE)
 
-# ---- Load & prepare data ----------------------------------------------------
+# load results and best-known
 df_raw <- read.csv("results/results_summary.csv", sep = ";", header = TRUE,
                    stringsAsFactors = FALSE)
 colnames(df_raw) <- c("Instance", "Init", "NH", "Pivot",
@@ -39,14 +36,13 @@ nh_labels   <- c("0"="Transpose","1"="Exchange","2"="Insert","3"="VND-TEI","4"="
 init_labels <- c("0"="Random","1"="CW")
 piv_labels  <- c("0"="First","1"="Best")
 
-df$NH_Label   <- nh_labels[as.character(df$NH)]
-df$Init_Label <- init_labels[as.character(df$Init)]
-df$Pivot_Label<- piv_labels[as.character(df$Pivot)]
-df$Algorithm  <- ifelse(df$NH %in% c(3,4), df$NH_Label,
-                        paste0(df$NH_Label, "-", df$Pivot_Label))
-df$Config     <- paste0(df$Algorithm, " (", df$Init_Label, ")")
+df$NH_Label    <- nh_labels[as.character(df$NH)]
+df$Init_Label  <- init_labels[as.character(df$Init)]
+df$Pivot_Label <- piv_labels[as.character(df$Pivot)]
+df$Algorithm   <- ifelse(df$NH %in% c(3,4), df$NH_Label,
+                         paste0(df$NH_Label, "-", df$Pivot_Label))
+df$Config      <- paste0(df$Algorithm, " (", df$Init_Label, ")")
 
-# summary per config
 summary_df <- df %>%
   group_by(Config, Algorithm, NH_Label, Init_Label, Pivot_Label, NH) %>%
   summarise(Mean_RPD  = mean(RPD,  na.rm=TRUE),
@@ -54,23 +50,20 @@ summary_df <- df %>%
             Mean_Time = mean(Time, na.rm=TRUE),
             .groups   = "drop")
 
-# Colour palette
-nh_colours <- c("Transpose"="#e74c3c", "Exchange"="#f39c12",
-                "Insert"   ="#27ae60", "VND-TEI"  ="#2980b9",
-                "VND-TIE"  ="#8e44ad")
+nh_colours  <- c("Transpose"="#e74c3c", "Exchange"="#f39c12",
+                 "Insert"   ="#27ae60", "VND-TEI"  ="#2980b9",
+                 "VND-TIE"  ="#8e44ad")
 init_shapes <- c("CW"=16, "Random"=17)
 
-# Common minimal theme (no title/subtitle, but keep legends)
 theme_clean <- theme_minimal(base_size = 12) +
   theme(plot.title    = element_blank(),
         plot.subtitle = element_blank())
 
-# ---- PLOT 1 : Horizontal bar — Avg RPD (Insert, Exchange, VND) -------------
+# plot 1: avg RPD bar chart (Exchange, Insert, VND)
 p1_data <- summary_df %>%
   filter(NH_Label %in% c("Insert","Exchange","VND-TEI","VND-TIE")) %>%
   mutate(Config = reorder(Config, -Mean_RPD))
 
-# Label is placed just after Mean_RPD + SD_RPD so it never overlaps the error bar
 p1 <- ggplot(p1_data, aes(x = Mean_RPD, y = Config, fill = NH_Label)) +
   geom_col(width = 0.65) +
   geom_errorbar(aes(xmin = Mean_RPD - SD_RPD, xmax = Mean_RPD + SD_RPD),
@@ -87,7 +80,7 @@ ggsave(file.path(OUT, "plot1_rpd_barchart.png"), p1,
        width = 8, height = 4.5, dpi = 150)
 cat("Saved plot1_rpd_barchart.png\n")
 
-# ---- PLOT 2 : Quality vs Time scatter ---------------------------------------
+# plot 2: quality vs time scatter
 p2_data <- summary_df %>%
   filter(NH_Label %in% c("Insert","Exchange","VND-TEI","VND-TIE"))
 
@@ -107,7 +100,7 @@ ggsave(file.path(OUT, "plot2_quality_vs_time.png"), p2,
        width = 7.5, height = 5, dpi = 150)
 cat("Saved plot2_quality_vs_time.png\n")
 
-# ---- PLOT 3 : CW vs Random — grouped bar chart ------------------------------
+# plot 3: CW vs Random initialisation comparison
 p3_data <- df %>%
   filter(NH_Label %in% c("Insert","Exchange")) %>%
   mutate(Label = paste0(NH_Label, "-", Pivot_Label)) %>%
@@ -134,7 +127,7 @@ ggsave(file.path(OUT, "plot3_init_comparison.png"), p3,
        width = 7, height = 4.5, dpi = 150)
 cat("Saved plot3_init_comparison.png\n")
 
-# ---- PLOT 4 : VND — simple bar chart with error bars ------------------------
+# plot 4: VND-TEI vs VND-TIE
 vnd_summary <- summary_df %>% filter(NH_Label %in% c("VND-TEI","VND-TIE"))
 
 p4 <- ggplot(vnd_summary, aes(x = NH_Label, y = Mean_RPD, fill = NH_Label)) +
@@ -153,4 +146,4 @@ ggsave(file.path(OUT, "plot4_vnd_comparison.png"), p4,
        width = 4.5, height = 4, dpi = 150)
 cat("Saved plot4_vnd_comparison.png\n")
 
-cat("All plots saved to", OUT, "\n")
+cat("Done.\n")

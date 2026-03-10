@@ -21,26 +21,56 @@
 #ifndef _LO_H_
 #define _LO_H_
 
+/*
+ * Cost matrix loaded from the instance file.
+ * CostMat[i][j] = benefit of placing node i directly before node j.
+ */
 extern long int **CostMat;
 
-int compareElement(const void * ptr1, const void * ptr2);
+int compareElement(const void *ptr1, const void *ptr2);
 
-long long int computeCost ( long int *lo );
+/* Compute f(s) = sum_{i<j} CostMat[s[i]][s[j]]. O(n^2). */
+long long int computeCost(long int *s);
+
+/* Build a random permutation of {0,...,PSize-1}. */
 void createRandomSolution(long int *s);
 
+/*
+ * Build a greedy solution using the Chenery-Watanabe heuristic:
+ * place nodes in decreasing order of row-sum R_i = sum_{j!=i} CostMat[i][j].
+ */
 void createCWSolution(long int *s);
 
-
+/*
+ * Iterative improvement until a local optimum is reached.
+ *
+ * neighborhood : 0=Transpose, 1=Exchange, 2=Insert
+ * pivot_rule   : 0=First-improvement, 1=Best-improvement
+ *
+ * Returns the objective value at the local optimum.
+ */
 long long int iterativeImprovment(long int *s, int neighborhood, int pivot_rule);
+
+/*
+ * Variable Neighbourhood Descent (first-improvement).
+ * Chains Transpose, Exchange and Insert; restarts from the first
+ * neighbourhood whenever an improvement is found.
+ *
+ * ordering : 0=TEI (Transpose->Exchange->Insert)
+ *            1=TIE (Transpose->Insert->Exchange)
+ */
 long long int vnd(long int *s, int ordering);
 
+/* Apply a move in-place. neighborhood: 0=Transpose, 1=Exchange, 2=Insert. */
 void applyMove(long int *s, int neighborhood, int i, int j);
 
+/* Gain of swapping adjacent positions i and i+1. O(1). */
 long int deltaTranspose(long int *s, int i);
+
+/* Gain of swapping positions i and j. O(n). */
 long int deltaExchange(long int *s, int i, int j);
+
+/* Gain of removing element at i and inserting it at j. O(n). */
 long int deltaInsert(long int *s, int i, int j);
-
-
-
 
 #endif

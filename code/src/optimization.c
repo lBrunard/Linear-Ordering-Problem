@@ -23,7 +23,7 @@
 #include <stdlib.h>
 //#include <values.h>
 
-#include "optimization.h" 
+#include "optimization.h"
 #include "instance.h"
 #include "utilities.h"
 
@@ -48,9 +48,8 @@ typedef struct{
 long long int computeCost (long int *s ) {
     int h,k;
     long long int sum;
-    
-    /* Diagonal value are not considered */
-    for (sum = 0, h = 0; h < PSize; h++ ) 
+
+    for (sum = 0, h = 0; h < PSize; h++ )
 	for ( k = h + 1; k < PSize; k++ )
 	    sum += CostMat[s[h]][s[k]];
     return(sum);
@@ -64,11 +63,11 @@ int compareElement(const void * ptr1, const void * ptr2){
     else if (elem2->score < elem1->score) return -1;
     return 0;
 
-} 
+}
 
 
 void createRandomSolution(long int *s) {
-    int j; 
+    int j;
     long int *random;
 
     random = generate_random_vector(PSize);
@@ -110,9 +109,7 @@ long long int iterativeImprovment(long int *s, int neighborhood, int pivot_rule)
         int bestI = -1, bestJ = -1;
         int found = 0;
 
-        /* Insert explores all (i,j) pairs with i!=j (both directions).
-         * Transpose only explores adjacent pairs j=i+1.
-         * Exchange explores pairs with j>i. */
+        /* Insert explores all (i,j) with i!=j; Transpose only j=i+1; Exchange only j>i. */
         int iLimit = (neighborhood == 2) ? PSize : PSize - 1;
 
         for(int i = 0; i < iLimit && !found; i++){
@@ -127,14 +124,14 @@ long long int iterativeImprovment(long int *s, int neighborhood, int pivot_rule)
                 else if(neighborhood == 2) d = deltaInsert(s, i, j);
 
                 if(d > 0){
-                    if(pivot_rule == 0){ // First Improvement
+                    if(pivot_rule == 0){
                         applyMove(s, neighborhood, i, j);
                         currentCost += d;
                         improvement = 1;
                         found = 1;
                         break;
                     }
-                    else if(d > bestDelta){ // Best Improvement
+                    else if(d > bestDelta){
                         bestDelta = d;
                         bestI = i;
                         bestJ = j;
@@ -151,9 +148,6 @@ long long int iterativeImprovment(long int *s, int neighborhood, int pivot_rule)
     return currentCost;
 }
 
-/* Variable Neighborhood Descent (first-improvement only).
- * ordering 0 — TEI: Transpose -> Exchange -> Insert
- * ordering 1 — TIE: Transpose -> Insert  -> Exchange */
 long long int vnd(long int *s, int ordering){
     int order[3];
     if(ordering == 0){
@@ -166,12 +160,12 @@ long long int vnd(long int *s, int ordering){
     int k = 0;
 
     while(k < 3){
-        long long int newCost = iterativeImprovment(s, order[k], 0); /* first-improvement */
+        long long int newCost = iterativeImprovment(s, order[k], 0);
         if(newCost > currentCost){
             currentCost = newCost;
-            k = 0; /* improvement found: restart from first neighborhood */
+            k = 0;
         } else {
-            k++;   /* no improvement: try next neighborhood */
+            k++;
         }
     }
     return currentCost;
@@ -179,12 +173,10 @@ long long int vnd(long int *s, int ordering){
 
 void applyMove(long int *s, int neighborhood, int i, int j) {
     if (neighborhood == 0 || neighborhood == 1) {
-        // Pour Transpose et Exchange, c'est juste un swap
         long int temp = s[i];
         s[i] = s[j];
         s[j] = temp;
     } else if (neighborhood == 2) {
-        // Pour Insert, il faut décaler les éléments entre i et j
         long int elementToMove = s[i];
         if (i < j) {
             for (int k = i; k < j; k++) s[k] = s[k+1];
@@ -213,7 +205,7 @@ long int deltaExchange (long int *s, int i, int j){
     long int g = CostMat[s[j]][s[i]] - CostMat[s[i]][s[j]];
 
     for(int k = i + 1; k < j; k++){
-        g += (CostMat[s[j]][s[k]] - CostMat[s[i]][s[k]]) + 
+        g += (CostMat[s[j]][s[k]] - CostMat[s[i]][s[k]]) +
              (CostMat[s[k]][s[i]] - CostMat[s[k]][s[j]]);
     }
 

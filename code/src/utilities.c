@@ -45,9 +45,9 @@ void fatal (char *s) {
 }
 
 double ran01( long *idum ) {
-/* 
+/*
       FUNCTION:      returns a pseudo-random number
-      INPUT:         a pointer to the seed variable 
+      INPUT:         a pointer to the seed variable
       OUTPUT:        a pseudo-random number uniformly distributed in [0,1]
       (SIDE)EFFECTS: changes the value of seed
 */
@@ -67,7 +67,7 @@ double ran01( long *idum ) {
  */
 int randInt(int minimum, int maximum) {
   return ( (int)(ran01(&Seed)*(maximum - minimum + 1)) + minimum );
-}  
+}
 
 
 long int * generate_random_vector(long int dim)
@@ -77,19 +77,19 @@ long int * generate_random_vector(long int dim)
    int     i, help, node, tot_assigned = 0;
    double  rnd;
 
-   random_vector = (long int *)malloc(dim * sizeof(long int));  
+   random_vector = (long int *)malloc(dim * sizeof(long int));
 
    if (!random_vector) {
        fatal("Error on random_vector malloc\n");
    }
 
-   for ( i = 0 ; i < dim; i++) 
+   for ( i = 0 ; i < dim; i++)
      random_vector[i] = i;
 
    for ( i = 0 ; i < dim ; i++ ) {
-     /* find (randomly) an index for a free unit */ 
+     /* find (randomly) an index for a free unit */
      rnd  = ran01 ( &Seed );
-     node = (long int) (rnd  * (dim - tot_assigned)); 
+     node = (long int) (rnd  * (dim - tot_assigned));
      help = random_vector[i];
      random_vector[i] = random_vector[i+node];
      random_vector[i+node] = help;
