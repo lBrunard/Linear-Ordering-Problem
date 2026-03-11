@@ -7,6 +7,12 @@
 #set par(justify: true, leading: 0.72em)
 #set heading(numbering: "1.")
 
+#let appendix(body) = {
+  set heading(numbering: "A", supplement: [Appendix])
+  counter(heading).update(0)
+  body
+}
+
 // ---- Title ------------------------------------------------------------------
 #align(center)[
   #v(0.4cm)
@@ -25,7 +31,14 @@
 
 #line(length: 100%, stroke: 0.8pt)
 #v(0.3cm)
+#align(center)[*_Abstract_*]
+#par(first-line-indent: 0pt)[
+_We compare twelve iterative improvement configurations and two Variable Neighbourhood Descent (VND) variants on 78 benchmark instances of the Linear Ordering Problem. The neighbourhood choice has the largest effect on solution quality: insert dominates exchange, and both leave transpose far behind. First-improvement finds better local optima than best-improvement, at the cost of longer runtimes. CW initialisation consistently beats a random start. VND-TIE slightly improves on the best single-neighbourhood result. All comparisons are supported by Wilcoxon signed-rank tests._
+]
+#line(length: 100%, stroke: 0.8pt)
 
+
+#v(0.3cm)
 
 // ---- 1. Introduction --------------------------------------------------------
 = Introduction
@@ -34,7 +47,7 @@ The Linear Ordering Problem (LOP) is a ranking problem. Given an $n times n$ wei
 
 $ f(pi) = sum_(i < j) c_(pi(i), pi(j)) $
 
-We want $i$ to appear before $j$ whenever $c_(i j) > c_(j i)$. The problem is NP-hard, so we don't have methods that solve the problem in an acceptable amount of time for bigger instaces. We use heuristics instead.
+We want $i$ to appear before $j$ whenever $c_(i j) > c_(j i)$. The problem is NP-hard, so we don't have methods that solve the problem in an acceptable amount of time for bigger instances. We use heuristics instead.
 
 This exercise is about local search: start from some solution, make small improving changes, and stop when none is possible. That stopping point is a *local optimum*. The question we are trying to answer is which combination of choices using neighbourhood, pivoting rule, initialisation, gets us to the best local optimum, and how quickly.
 
@@ -102,7 +115,13 @@ Average RPDs (defined in section 5) alone can be misleading, a gap might come fr
 
 = Results and Analysis
 
-Each of the 14 algorithm configurations was run once on all 78 instances. To compare solutions, we use the *Relative Percentage Deviation* (RPD) from the best-known solution:
+== Experimental setup
+
+The solver is written in C, compiled with GCC and `-O2` on macOS (Apple M1). Each of the 14 algorithm configurations was run once on all 78 instances. Compilation and execution details are in the `README.md` file included with the source code.
+
+== Evaluation metric
+
+To compare solutions, we use the *Relative Percentage Deviation* (RPD) from the best-known solution:
 
 $ "RPD" = frac("BestKnown" - "FinalCost", "BestKnown") times 100 $
 
@@ -124,34 +143,34 @@ An RPD of 0 means we matched the best-known value. A larger RPD means our soluti
 // slow rows for time: y ∈ {1,3,5,6}  medium: y ∈ {2,4,7,8}  fast: y ∈ {9,10,11,12}
 #figure(
   table(
-    columns: (2fr, 0.65fr, 0.75fr, 0.65fr, 0.9fr),
+    columns: (2fr, 0.65fr, 0.75fr, 0.65fr, 0.5fr, 0.5fr),
     inset: 5pt,
-    align: (left, center, center, center, right),
+    align: (left, center, center, center, right, right),
     fill: (x, y) => {
       if y == 0 { luma(210) }
       else if x == 2 or x == 3 {
         if y <= 4  { rgb("#c3e6cb") }
         else if y <= 8 { rgb("#ffeeba") }
         else           { rgb("#f5c6cb") }
-      } else if x == 4 {
+      } else if x == 4 or x == 5 {
         if y == 9 or y == 10 or y == 11 or y == 12 { rgb("#56ab6a") }
         else if y == 2 or y == 4 or y == 7 or y == 8 { rgb("#f3c163") }
         else { rgb("#f38686") }
       }
     },
-    [*Algorithm*], [*Init*], [*Avg RPD*], [*SD*], [*Avg Time (s)*],
-    [Insert — First],    [CW],     [1.59], [0.33], [2.99],
-    [Insert — Best],     [CW],     [2.01], [0.45], [0.79],
-    [Insert — First],    [Random], [2.02], [0.45], [4.28],
-    [Insert — Best],     [Random], [2.30], [0.46], [0.85],
-    [Exchange — First],  [CW],     [2.52], [0.41], [3.97],
-    [Exchange — First],  [Random], [2.82], [0.48], [4.87],
-    [Exchange — Best],   [CW],     [3.28], [0.55], [0.70],
-    [Exchange — Best],   [Random], [3.60], [0.50], [0.76],
-    [Transpose — Best],  [CW],     [19.25],[1.89], [0.006],
-    [Transpose — First], [CW],     [19.38],[1.92], [0.003],
-    [Transpose — Best],  [Random], [34.47],[3.80], [0.007],
-    [Transpose — First], [Random], [34.61],[3.80], [0.004],
+    [*Algorithm*], [*Init*], [*Avg RPD*], [*SD*], [*Avg Time (s)*], [*Total Time (s)*],
+    [Insert — First],    [CW],     [1.59], [0.33], [2.99], [233.4],
+    [Insert — Best],     [CW],     [2.01], [0.45], [0.79], [61.7],
+    [Insert — First],    [Random], [2.02], [0.45], [4.28], [333.9],
+    [Insert — Best],     [Random], [2.30], [0.46], [0.85], [66.3],
+    [Exchange — First],  [CW],     [2.52], [0.41], [3.97], [309.7],
+    [Exchange — First],  [Random], [2.82], [0.48], [4.87], [379.9],
+    [Exchange — Best],   [CW],     [3.28], [0.55], [0.70], [54.3],
+    [Exchange — Best],   [Random], [3.60], [0.50], [0.76], [59.3],
+    [Transpose — Best],  [CW],     [19.25],[1.89], [0.006], [0.5],
+    [Transpose — First], [CW],     [19.38],[1.92], [0.003], [0.2],
+    [Transpose — Best],  [Random], [34.47],[3.80], [0.007], [0.5],
+    [Transpose — First], [Random], [34.61],[3.80], [0.004], [0.3],
   ),
   caption: [
     All 12 configurations over 78 instances, sorted by solution quality.
@@ -248,9 +267,25 @@ Both VND variants beat every single-neighbourhood algorithm, though the margin i
 
 === Why do some algorithms take much longer than others?
 
-The runtimes in @tab:results11 span several orders of magnitude fractions of a millisecond for transpose, nearly 5 seconds for first-improvement insert. Per-iteration complexity explains the gap.
+Execution times vary considerably in @tab:results11 They range from a few milliseconds to several seconds for the FI. @fig:time_bar visualises this spread.
 
-Each iteration scans the neighbourhood for an improving move. The cost depends on how many moves there are and how expensive each evaluation is:
+
+#grid(columns: (2fr, 1.1fr), inset: 10pt)[
+#figure(
+  image("plots/plot6_time_barchart.png", width: 85%),
+  caption: [
+    Average execution time per instance (s) for all configurations, sorted from fastest to slowest.
+  ]
+) <fig:time_bar>
+][
+Comparing @fig:time_bar with @fig:rpd_bar and @tab:results11, the ordering is inverted, the configurations that take the longest (Insert-First, Exchange-First) are the ones with the best RPDs, and the fastest (Transpose) give the worst solutions. The reason is that a bigger neighbourhood means more candidate moves to evaluate at each step, 
+]
+
+which costs more time but also lets the algorithm see further into the solution space. 
+It finds better local optima because it actually looks at more alternatives before deciding. Transpose is the opposite extreme, only $n-1$ adjacent swaps per iteration, so each step is almost free, but the search barely moves and gets stuck early.
+
+
+Per-iteration complexity explains the gap more precisely. Each iteration scans the neighbourhood for an improving move. The cost depends on how many moves there are and how expensive each evaluation is
 
 #figure(
   table(
@@ -266,11 +301,11 @@ Each iteration scans the neighbourhood for an improving move. The cost depends o
   caption: [Theoretical cost per iteration of local search for each neighbourhood.]
 )
 
-Transpose is $O(n)$ per iteration only $n-1$ pairs, each evaluated in $O(1)$ which is why it finishes in under 10 ms even for $n = 250$. The cost is a tiny neighbourhood, and the results show it.
+For transpose, there are only $n-1$ pairs to check and each one costs $O(1)$, so a full scan is $O(n)$. That is why transpose runs in under 10 ms even on instances with $n = 250$: there is just not much work to do per step.
 
-Exchange and Insert are $O(n^3)$ per iteration under best-improvement: $O(n^2)$ pairs, each costing $O(n)$. With first-improvement the average is lower since the scan stops on the first hit, but near a local optimum the algorithm checks almost everything before giving up, so the worst case is about the same.
+Exchange and insert have around $n^2$ possible moves, and evaluating each one requires scanning the elements between the two positions, which is $O(n)$. One full iteration then costs about $O(n^3)$ under best-improvement. First-improvement does not always go through the whole list since it stops as soon as it finds a positive move, but close to a local optimum almost nothing improves, so it ends up checking most of the neighbourhood anyway.
 
-@fig:pareto shows the quality-time. Insert-FI (CW) wins on quality and Insert-BI and Exchange-BI trade some quality for speed.
+@fig:pareto shows the quality/time ratio. @fig:pareto doesn't contain Transpose because as for @fig:rpd_bar this would be not reachable but a version with Transpose is available in @addiGraphs. As seen before, this version show that only $y$ axis is grown.
 
 #figure(
   image("plots/plot2_quality_vs_time.png", width: 95%),
@@ -279,41 +314,44 @@ Exchange and Insert are $O(n^3)$ per iteration under best-improvement: $O(n^2)$ 
   ]
 ) <fig:pareto>
 
-=== Why is best-improvement faster than first-improvement for insert?
-
-BI takes 0.79 s, FI takes 2.99 s, in fact BI checks the entire neighbourhood at every step. BI always takes the largest available gain, so it converges in far fewer steps, the higher per-step cost is more than offset by doing fewer of them. FI moves in small increments and needs many more iterations to reach a local optimum.
-
-=== Effect of instance size
-
-From $n = 150$ to $n = 250$, the per-iteration cost grows roughly as $(250/150)^3 approx 4.6$ for exchange and insert under best-improvement. The observed runtimes are consistent with this cubic scaling once we account for the mixed instance sizes in the benchmark.
 
 === Effect of initialisation on time
 
-CW also speeds up convergence. Starting closer to a local optimum means fewer iterations to get there. For Insert-FI, the CW start cuts about 1.3 s off the runtime compared to a random start (2.99 s vs 4.28 s, a roughly 1.4× speedup).
+CW also speeds up convergence. Starting closer to a local optimum means fewer iterations to get there. For Insert-FI, the CW start cuts about 1.3 s off the runtime compared to a random start.
 
-=== Possible optimisations
+=== Possible improvements
 
-Three standard techniques could reduce runtime further:
-- *Don't-look bits:* skip elements not recently involved in an improving move.
-- *Incremental delta table:* after a move, update only the affected gain values rather than recomputing the full table.
-- *Candidate lists:* precompute a short list of the most promising move pairs and restrict the search to those.
+One way to speed up local search without losing much quality is to use a different neighbourhood. The Chanas-Kobylanski (CK) heuristic that uses two functions sort and reverse. Each cycle is guaranteed not to worsen the solution, and CK runs faster than insert on the same instances for comparable solution quality #cite(<schiavinotto_evocop>).
+
+Another direction is to escape local optima entirely. Iterated Local Search (ILS) does this by perturbing a local optimum with a few random exchanges and then re-optimising from the perturbed solution. On the LOP, ILS with CK as the inner local search finds global optima on standard benchmarks in under a few seconds #cite(<schiavinotto_evocop>).
 
 = Conclusion
 
-All three design choices — neighbourhood, initialisation, pivoting rule — affect solution quality, but not by the same amount. The neighbourhood is by far the most important: insert dominates exchange, and both leave transpose far behind. Transpose just cannot cover enough ground with adjacent-only swaps, and it shows. CW initialisation helps everywhere, with the biggest payoff for transpose where the starting point matters most since the search itself is so weak. The pivoting rule has a smaller but consistent effect: first-improvement finds slightly better solutions at the cost of more time, while best-improvement trades a bit of quality for speed.
+All three design choices neighbourhood, initialisation, pivoting rule, affect solution quality, but not by the same amount. The neighbourhood is by far the most important: insert dominates exchange, and both dominates Transpose. CW initialisation helps everywhere, with the biggest difference for transpose where the starting point matters most since the search itself is so weak. The pivoting rule has a smaller but consistent effect: first-improvement finds better solutions at the cost of more time, while best-improvement trades a bit of quality for speed.
 
-VND improves on the best single-neighbourhood algorithm, but barely — VND-TIE is 0.05% better than Insert-First (CW). Insert already captures most of what local search can offer on this problem. VND adds something, but not much. The neighbourhood ordering does matter though: TIE beats TEI in both quality and speed, and the difference is statistically significant. Running insert before exchange is clearly better than the other way around.
+VND improves on the best single-neighbourhood algorithm, but VND-TIE is a bit better than Insert-First (CW). Insert already captures most of what local search can offer on this problem. VND adds something, but not much. The neighbourhood ordering does matter though: TIE beats TEI in both quality and speed, and the difference is statistically significant. Running insert before exchange is clearly better than the other way around.
 
-These algorithms will be the starting point for the second exercise, where metaheuristic techniques will push solution quality further by escaping local optima rather than settling into them.
-#pagebreak()
+
+
 #bibliography("refs.bib", title: "References", style: "ieee")
 
 
-= Appendix 
 
+
+
+
+#outline(target: heading.where(supplement: [Appendix]), title: [Appendix])
+
+= Additional Graphs <addiGraphs>
 #figure(
   image("plots/plot1b_rpd_all.png", width: 95%),
   caption: [
     Average RPD (%) for Insert, Exchange and VND configurations, sorted from best to worst. Each bar shows the average over 78 instances.
   ]
 ) <fig:rpd_all>
+#figure(
+  image("plots/plot2b_quality_vs_time_all.png", width: 95%),
+  caption: [
+    Quality-time trade-off for all 14 configurations including Transpose. 
+  ]
+) <fig:pareto_all>

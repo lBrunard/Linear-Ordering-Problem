@@ -99,7 +99,7 @@ In **non-verbose mode** (default), each run prints one semicolon-separated line:
 
 ## Running all experiments
 
-The script `auto_run.sh` runs all 14 configurations (12 iterative improvement + 2 VND) on all instances and saves results to `results_summary.csv`:
+The script `auto_run.sh` runs all 14 configurations (12 iterative improvement + 2 VND) on all instances and saves results to `results/results_summary.csv`:
 
 ```bash
 bash auto_run.sh
@@ -107,29 +107,9 @@ bash auto_run.sh
 
 ---
 
-## Statistical analysis (requires R)
-
-```bash
-Rscript statistical_tests.R
-```
-
-Produces:
-- `summary_statistics.csv` — average RPD, std deviation, and time per configuration
-- `wilcoxon_ex1_1.csv` — pairwise Wilcoxon test results for Ex 1.1
-- `wilcoxon_ex1_2.csv` — Wilcoxon test result for VND-TEI vs VND-TIE
-- `raw_data_for_report.txt` — raw RPD data for submission
-
-```bash
-Rscript ../generate_plots.R
-```
-
-Produces PNG charts in `../plots/`.
-
----
-
 ## Best known solutions
 
-Reference values are in `best_known/best_known.txt` (one instance per line: `<name> <value>`).
+Reference values are in `code/best_known/best_known.txt` (one instance per line: `<name> <value>`).
 
 ---
 
@@ -137,15 +117,20 @@ Reference values are in `best_known/best_known.txt` (one instance per line: `<na
 
 ```
 .
-├── src/
-│   ├── main.c            # Argument parsing, entry point
-│   ├── optimization.c/h  # All algorithms (local search, VND, delta functions)
-│   ├── instance.c/h      # Instance reader
-│   ├── utilities.c/h     # RNG, helper functions
-│   └── timer.c/h         # Timing utilities
-├── instances/            # 78 benchmark instances (sizes 150 and 250)
-├── best_known/           # Best known solution values
-├── auto_run.sh           # Batch experiment runner
-├── statistical_tests.R   # Statistical analysis script
-└── Makefile
+├── code/
+│   ├── src/                  # C source files
+│   │   ├── main.c            # Argument parsing, entry point
+│   │   ├── optimization.c/h  # All algorithms (local search, VND, delta functions)
+│   │   ├── instance.c/h      # Instance reader
+│   │   ├── utilities.c/h     # RNG, helper functions
+│   │   └── timer.c/h         # Timing utilities
+│   ├── instances/            # 78 benchmark instances (sizes 150 and 250)
+│   ├── best_known/           # Best known solution values
+│   ├── Makefile
+│   └── README.md             # Compilation and usage details
+├── auto_run.sh               # Batch experiment runner
+├── results/
+│   └── raw_data_for_report.txt  # Raw RPD data for statistical testing
+├── report.pdf                # Report
+└── README.md                 # This file
 ```

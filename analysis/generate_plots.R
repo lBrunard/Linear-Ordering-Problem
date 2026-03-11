@@ -100,6 +100,26 @@ ggsave(file.path(OUT, "plot2_quality_vs_time.png"), p2,
        width = 7.5, height = 5, dpi = 150)
 cat("Saved plot2_quality_vs_time.png\n")
 
+# plot 2b: quality vs time scatter (ALL configs including Transpose)
+library(ggrepel)
+p2b <- ggplot(summary_df, aes(x = Mean_Time, y = Mean_RPD,
+                               colour = NH_Label, shape = Init_Label)) +
+  geom_point(size = 4.5, stroke = 1.3) +
+  geom_text_repel(aes(label = paste0(Algorithm, " (", Init_Label, ")")),
+                  size = 2.6, show.legend = FALSE,
+                  max.overlaps = 20, seed = 42,
+                  box.padding = 0.5, point.padding = 0.3) +
+  scale_colour_manual(values = nh_colours, name = "Neighbourhood") +
+  scale_shape_manual(values = init_shapes, name = "Initialisation") +
+  scale_x_continuous(labels = function(x) paste0(x, " s")) +
+  labs(x = "Average time per instance (s)", y = "Average RPD (%)") +
+  theme_clean +
+  theme(panel.grid.minor = element_blank())
+
+ggsave(file.path(OUT, "plot2b_quality_vs_time_all.png"), p2b,
+       width = 8, height = 5.5, dpi = 150)
+cat("Saved plot2b_quality_vs_time_all.png\n")
+
 # plot 3: CW vs Random initialisation comparison
 p3_data <- df %>%
   filter(NH_Label %in% c("Insert","Exchange")) %>%
@@ -146,4 +166,27 @@ ggsave(file.path(OUT, "plot4_vnd_comparison.png"), p4,
        width = 4.5, height = 4, dpi = 150)
 cat("Saved plot4_vnd_comparison.png\n")
 
+
+
+
+
+# plot 6: execution time bar chart (all configs)
+p6_data <- summary_df %>%
+  mutate(Config = reorder(Config, Mean_Time))
+
+p6 <- ggplot(p6_data, aes(x = Mean_Time, y = Config, fill = NH_Label)) +
+  geom_col(width = 0.65) +
+  geom_text(aes(label = sprintf("%.3f s", Mean_Time)),
+            hjust = -0.1, size = 3.3, colour = "grey20") +
+  scale_fill_manual(values = nh_colours, name = "Neighbourhood") +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.22)),
+                     labels = function(x) paste0(x, " s")) +
+  labs(x = "Average time per instance (s)", y = NULL) +
+  theme_clean
+
+ggsave(file.path(OUT, "plot6_time_barchart.png"), p6,
+       width = 8, height = 5, dpi = 150)
+cat("Saved plot6_time_barchart.png\n")
+
 cat("Done.\n")
+
