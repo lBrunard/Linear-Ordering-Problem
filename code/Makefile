@@ -8,7 +8,7 @@ OBJECTS=src/instance.o src/main.o src/optimization.o src/timer.o src/utilities.o
 all: lop
 
 lop: $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o lop
+	$(CC) $(CFLAGS) $(OBJECTS) -lm -o lop
 
 clean:
 	rm -f src/*~ src/*.o lop

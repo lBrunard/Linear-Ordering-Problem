@@ -73,4 +73,26 @@ long int deltaExchange(long int *s, int i, int j);
 /* Gain of removing element at i and inserting it at j. O(n). */
 long int deltaInsert(long int *s, int i, int j);
 
+/* ==================================
+ *             IMPL 2
+ * ================================== */
+
+/*
+ * Simulated Annealing with insert neighborhood.
+ * Starts from current solution s, runs until timeLimit (seconds).
+ * Applies VND on the best solution found at the end.
+ * Returns the objective value of the best solution.
+ */
+long long int simulatedAnnealing(long int *s, double timeLimit);
+
+
+
+/*
+ * MAX-MIN Ant System for LOP.
+ * Constructs solutions using pheromone trails + heuristic info,
+ * applies VND to each ant's solution.
+ * Returns the objective value of the best solution found.
+ */
+long long int aco(long int *s, double timeLimit);
+
 #endif
