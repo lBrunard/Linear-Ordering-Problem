@@ -341,33 +341,37 @@ long long int aco(long int *s, double timeLimit){
                     probs[j] = pow(phero, alpha) * pow(heur, beta);
                     sumProb += probs[j];
                 }
+                /* Roulette-wheel selection */
                 double r = ran01(&Seed) * sumProb;
                 double cumul = 0.0;
-                int choosen = -1;
-                for(int j = 0; j<PSize; j++){
+                int chosen = -1;
+                for(int j = 0; j < PSize; j++){
                     if(!available[j]) continue;
                     cumul += probs[j];
-                    if(cumul >=r) {
-                        choosen = j;
+                    if(cumul >= r) {
+                        chosen = j;
                         break;
                     }
-                    if(choosen == -1){
-                        for(int j = PSize-1; j >= 0; j--){
-                            if(available[j]){
-                                choosen = j;
-                                break;
-                            }
+                }
+                /* Fallback: pick last available element */
+                if(chosen == -1){
+                    for(int j = PSize - 1; j >= 0; j--){
+                        if(available[j]){
+                            chosen = j;
+                            break;
                         }
                     }
-                    antSol[pos] = choosen;
-                    available[choosen] = 0;
                 }
-                //VND on antsol
-                long long int antCost = vnd(antSol, 0);
-                if(antCost > iterBestCost){
-                    iterBestCost = antCost;
-                    memcpy(iterbestSol, antSol, PSize * sizeof(long int));
-                }
+
+                antSol[pos] = chosen;
+                available[chosen] = 0;
+            }
+
+            /* VND on fully constructed solution */
+            long long int antCost = vnd(antSol, 0);
+            if(antCost > iterBestCost){
+                iterBestCost = antCost;
+                memcpy(iterbestSol, antSol, PSize * sizeof(long int));
             }
         }
         if(iterBestCost >bestCost){

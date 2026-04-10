@@ -45,7 +45,7 @@ void readOpts(int argc, char **argv) {
         {0, 0, 0, 0}
     };
 
-    while ((opt = getopt_long(argc, argv, "i:fbtencrv12", long_options, &option_index)) != -1) {
+    while ((opt = getopt_long(argc, argv, "i:fbtencrv12saT:S:", long_options, &option_index)) != -1) {
         switch (opt) {
             case 'i': FileName      = strdup(optarg);   break;
             case 'f': pivot_rule    = 0;                break;
@@ -60,7 +60,7 @@ void readOpts(int argc, char **argv) {
             case 's': algorithm     = 1;                break;
             case 'a': algorithm     = 2;                break;
             case 'T': timeLimit     = atof(optarg);     break;
-            case 'S': userSeed      = atof(optarg);     break;
+            case 'S': userSeed      = atoi(optarg);     break;
             case 'v': verbose       = 1;                break;
             default:
                 fprintf(stderr,
