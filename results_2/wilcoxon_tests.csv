@@ -1,4 +1,4 @@
 "Algo1","Algo2","W","p.value","significant"
-"SA","ACO",780,0,"YES *"
+"SA","ACO",0,0,"YES *"
 "SA","VND-TIE",0,0,"YES *"
-"ACO","VND-TIE",0,0,"YES *"
+"ACO","VND-TIE",1,0,"YES *"
