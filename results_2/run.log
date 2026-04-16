@@ -1,0 +1,253 @@
+Found 39 instances of size 150.
+
+==========================================
+ PHASE 0: Measuring VND-TIE time (CW)
+==========================================
+  VND: N-be75eec_150
+  VND: N-be75np_150
+  VND: N-be75oi_150
+  VND: N-be75tot_150
+  VND: N-stabu1_150
+  VND: N-stabu2_150
+  VND: N-stabu3_150
+  VND: N-t59b11xx_150
+  VND: N-t59d11xx_150
+  VND: N-t59f11xx_150
+  VND: N-t59n11xx_150
+  VND: N-t65b11xx_150
+  VND: N-t65d11xx_150
+  VND: N-t65f11xx_150
+  VND: N-t65l11xx_150
+  VND: N-t65n11xx_150
+  VND: N-t69r11xx_150
+  VND: N-t70b11xx_150
+  VND: N-t70d11xn_150
+  VND: N-t70d11xx_150
+  VND: N-t70f11xx_150
+  VND: N-t70l11xx_150
+  VND: N-t70n11xx_150
+  VND: N-t74d11xx_150
+  VND: N-t75d11xx_150
+  VND: N-t75e11xx_150
+  VND: N-t75k11xx_150
+  VND: N-t75n11xx_150
+  VND: N-tiw56n54_150
+  VND: N-tiw56n58_150
+  VND: N-tiw56n62_150
+  VND: N-tiw56n66_150
+  VND: N-tiw56n67_150
+  VND: N-tiw56n72_150
+  VND: N-tiw56r54_150
+  VND: N-tiw56r58_150
+  VND: N-tiw56r66_150
+  VND: N-tiw56r67_150
+  VND: N-tiw56r72_150
+
+  Average VND time : 0.733433s
+  Time limit (x500): 366.72s
+  RTD cutoff (x5000): 3667.16s
+
+==========================================
+ PHASE 1: SLS runs (SA + ACO)
+==========================================
+  SA  : N-be75eec_150
+  ACO : N-be75eec_150
+  SA  : N-be75np_150
+  ACO : N-be75np_150
+  SA  : N-be75oi_150
+  ACO : N-be75oi_150
+  SA  : N-be75tot_150
+  ACO : N-be75tot_150
+  SA  : N-stabu1_150
+  ACO : N-stabu1_150
+  SA  : N-stabu2_150
+  ACO : N-stabu2_150
+  SA  : N-stabu3_150
+  ACO : N-stabu3_150
+  SA  : N-t59b11xx_150
+  ACO : N-t59b11xx_150
+  SA  : N-t59d11xx_150
+  ACO : N-t59d11xx_150
+  SA  : N-t59f11xx_150
+  ACO : N-t59f11xx_150
+  SA  : N-t59n11xx_150
+  ACO : N-t59n11xx_150
+  SA  : N-t65b11xx_150
+  ACO : N-t65b11xx_150
+  SA  : N-t65d11xx_150
+  ACO : N-t65d11xx_150
+  SA  : N-t65f11xx_150
+  ACO : N-t65f11xx_150
+  SA  : N-t65l11xx_150
+  ACO : N-t65l11xx_150
+  SA  : N-t65n11xx_150
+  ACO : N-t65n11xx_150
+  SA  : N-t69r11xx_150
+  ACO : N-t69r11xx_150
+  SA  : N-t70b11xx_150
+  ACO : N-t70b11xx_150
+  SA  : N-t70d11xn_150
+  ACO : N-t70d11xn_150
+  SA  : N-t70d11xx_150
+  ACO : N-t70d11xx_150
+  SA  : N-t70f11xx_150
+  ACO : N-t70f11xx_150
+  SA  : N-t70l11xx_150
+  ACO : N-t70l11xx_150
+  SA  : N-t70n11xx_150
+  ACO : N-t70n11xx_150
+  SA  : N-t74d11xx_150
+  ACO : N-t74d11xx_150
+  SA  : N-t75d11xx_150
+  ACO : N-t75d11xx_150
+  SA  : N-t75e11xx_150
+  ACO : N-t75e11xx_150
+  SA  : N-t75k11xx_150
+  ACO : N-t75k11xx_150
+  SA  : N-t75n11xx_150
+  ACO : N-t75n11xx_150
+  SA  : N-tiw56n54_150
+  ACO : N-tiw56n54_150
+  SA  : N-tiw56n58_150
+  ACO : N-tiw56n58_150
+  SA  : N-tiw56n62_150
+  ACO : N-tiw56n62_150
+  SA  : N-tiw56n66_150
+  ACO : N-tiw56n66_150
+  SA  : N-tiw56n67_150
+  ACO : N-tiw56n67_150
+  SA  : N-tiw56n72_150
+  ACO : N-tiw56n72_150
+  SA  : N-tiw56r54_150
+  ACO : N-tiw56r54_150
+  SA  : N-tiw56r58_150
+  ACO : N-tiw56r58_150
+  SA  : N-tiw56r66_150
+  ACO : N-tiw56r66_150
+  SA  : N-tiw56r67_150
+  ACO : N-tiw56r67_150
+  SA  : N-tiw56r72_150
+  ACO : N-tiw56r72_150
+
+Phase 1 done. Results in /root/Linear-Ordering-Problem/results_2/sls_results.csv
+
+==========================================
+ PHASE 2: RTD (25 runs, 2 instances)
+==========================================
+  RTD instance: N-be75eec_150
+    SA  seed=1
+    ACO seed=1
+    SA  seed=2
+    ACO seed=2
+    SA  seed=3
+    ACO seed=3
+    SA  seed=4
+    ACO seed=4
+    SA  seed=5
+    ACO seed=5
+    SA  seed=6
+    ACO seed=6
+    SA  seed=7
+    ACO seed=7
+    SA  seed=8
+    ACO seed=8
+    SA  seed=9
+    ACO seed=9
+    SA  seed=10
+    ACO seed=10
+    SA  seed=11
+    ACO seed=11
+    SA  seed=12
+    ACO seed=12
+    SA  seed=13
+    ACO seed=13
+    SA  seed=14
+    ACO seed=14
+    SA  seed=15
+    ACO seed=15
+    SA  seed=16
+    ACO seed=16
+    SA  seed=17
+    ACO seed=17
+    SA  seed=18
+    ACO seed=18
+    SA  seed=19
+    ACO seed=19
+    SA  seed=20
+    ACO seed=20
+    SA  seed=21
+    ACO seed=21
+    SA  seed=22
+    ACO seed=22
+    SA  seed=23
+    ACO seed=23
+    SA  seed=24
+    ACO seed=24
+    SA  seed=25
+    ACO seed=25
+  RTD instance: N-be75np_150
+    SA  seed=1
+    ACO seed=1
+    SA  seed=2
+    ACO seed=2
+    SA  seed=3
+    ACO seed=3
+    SA  seed=4
+    ACO seed=4
+    SA  seed=5
+    ACO seed=5
+    SA  seed=6
+    ACO seed=6
+    SA  seed=7
+    ACO seed=7
+    SA  seed=8
+    ACO seed=8
+    SA  seed=9
+    ACO seed=9
+    SA  seed=10
+    ACO seed=10
+    SA  seed=11
+    ACO seed=11
+    SA  seed=12
+    ACO seed=12
+    SA  seed=13
+    ACO seed=13
+    SA  seed=14
+    ACO seed=14
+    SA  seed=15
+    ACO seed=15
+    SA  seed=16
+    ACO seed=16
+    SA  seed=17
+    ACO seed=17
+    SA  seed=18
+    ACO seed=18
+    SA  seed=19
+    ACO seed=19
+    SA  seed=20
+    ACO seed=20
+    SA  seed=21
+    ACO seed=21
+    SA  seed=22
+    ACO seed=22
+    SA  seed=23
+    ACO seed=23
+    SA  seed=24
+    ACO seed=24
+    SA  seed=25
+    ACO seed=25
+
+Phase 2 done. Results in /root/Linear-Ordering-Problem/results_2/rtd_results.csv
+
+==========================================
+ ALL DONE
+==========================================
+Results saved in: /root/Linear-Ordering-Problem/results_2/
+  - vnd_times.csv     (VND timing)
+  - sls_results.csv   (SA + ACO main runs)
+  - rtd_results.csv   (RTD data)
+  - config.txt        (time parameters)
+
+Next: run the R analysis scripts:
+  Rscript analysis_2/statistical_tests.R
+  Rscript analysis_2/generate_plots.R

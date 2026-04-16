@@ -1,40 +1,40 @@
 Instance;Init;NH;Pivot;InitCost;FinalCost;Time
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-be75eec_150;1;4;0;2757802;3428462;0.214068
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-be75np_150;1;4;0;5606444;6978974;0.195897
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-be75oi_150;1;4;0;1885382;2217289;0.177317
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-be75tot_150;1;4;0;9420023;12058536;0.196479
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-stabu1_150;1;4;0;2282133;2842419;0.228067
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-stabu2_150;1;4;0;3383526;4280380;0.228471
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-stabu3_150;1;4;0;3514232;4468985;0.238318
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t59b11xx_150;1;4;0;2486900;3163230;0.168107
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t59d11xx_150;1;4;0;1126125;1432005;0.183066
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t59f11xx_150;1;4;0;1189574;1517837;0.156438
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t59n11xx_150;1;4;0;244784;314324;0.169142
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t65b11xx_150;1;4;0;5202210;6340712;0.211194
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t65d11xx_150;1;4;0;2818960;3493296;0.209779
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t65f11xx_150;1;4;0;2449999;3107380;0.168944
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t65l11xx_150;1;4;0;210520;251226;0.130793
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t65n11xx_150;1;4;0;411247;539492;0.177122
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t69r11xx_150;1;4;0;8631096;11530262;0.208001
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t70b11xx_150;1;4;0;7599328;9523483;0.187950
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t70d11xn_150;1;4;0;4588632;5723241;0.198942
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t70d11xx_150;1;4;0;4884984;6079372;0.256927
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t70f11xx_150;1;4;0;4015831;5039076;0.215696
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t70l11xx_150;1;4;0;340295;426572;0.134106
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t70n11xx_150;1;4;0;708698;933454;0.226278
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t74d11xx_150;1;4;0;7420776;9283852;0.238812
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t75d11xx_150;1;4;0;7630130;9562312;0.249461
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t75e11xx_150;1;4;0;32207248;40860036;0.212155
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t75k11xx_150;1;4;0;1179477;1520137;0.184102
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-t75n11xx_150;1;4;0;1315463;1696701;0.226555
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-tiw56n54_150;1;4;0;676518;819717;0.202812
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-tiw56n58_150;1;4;0;915336;1138432;0.196025
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-tiw56n62_150;1;4;0;1285241;1596066;0.193488
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-tiw56n66_150;1;4;0;1664444;2073129;0.232718
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-tiw56n67_150;1;4;0;1926677;2337347;0.239949
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-tiw56n72_150;1;4;0;3334262;4085176;0.244773
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-tiw56r54_150;1;4;0;766678;941645;0.189903
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-tiw56r58_150;1;4;0;960133;1196962;0.228561
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-tiw56r66_150;1;4;0;1537816;1907222;0.202301
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-tiw56r67_150;1;4;0;1648916;2032057;0.245980
-/Users/luisbrunard/Documents/ULB/MA1/HEURISTICS/IMPL 1/code/instances/N-tiw56r72_150;1;4;0;2246380;2768632;0.237197
+/root/Linear-Ordering-Problem/code/instances/N-be75eec_150;1;4;0;2757802;3428462;0.764883
+/root/Linear-Ordering-Problem/code/instances/N-be75np_150;1;4;0;5606444;6978974;0.839913
+/root/Linear-Ordering-Problem/code/instances/N-be75oi_150;1;4;0;1885382;2217289;0.736871
+/root/Linear-Ordering-Problem/code/instances/N-be75tot_150;1;4;0;9420023;12058536;0.724876
+/root/Linear-Ordering-Problem/code/instances/N-stabu1_150;1;4;0;2282133;2842419;0.945291
+/root/Linear-Ordering-Problem/code/instances/N-stabu2_150;1;4;0;3383526;4280380;0.888270
+/root/Linear-Ordering-Problem/code/instances/N-stabu3_150;1;4;0;3514232;4468985;0.893476
+/root/Linear-Ordering-Problem/code/instances/N-t59b11xx_150;1;4;0;2479660;3163230;0.684801
+/root/Linear-Ordering-Problem/code/instances/N-t59d11xx_150;1;4;0;1126125;1432005;0.691735
+/root/Linear-Ordering-Problem/code/instances/N-t59f11xx_150;1;4;0;1189574;1517837;0.647548
+/root/Linear-Ordering-Problem/code/instances/N-t59n11xx_150;1;4;0;244784;314324;0.594141
+/root/Linear-Ordering-Problem/code/instances/N-t65b11xx_150;1;4;0;5202210;6340712;0.701416
+/root/Linear-Ordering-Problem/code/instances/N-t65d11xx_150;1;4;0;2820173;3493296;0.663084
+/root/Linear-Ordering-Problem/code/instances/N-t65f11xx_150;1;4;0;2449999;3107380;0.544336
+/root/Linear-Ordering-Problem/code/instances/N-t65l11xx_150;1;4;0;210520;251226;0.435901
+/root/Linear-Ordering-Problem/code/instances/N-t65n11xx_150;1;4;0;411247;539492;0.566184
+/root/Linear-Ordering-Problem/code/instances/N-t69r11xx_150;1;4;0;8631096;11530262;0.747533
+/root/Linear-Ordering-Problem/code/instances/N-t70b11xx_150;1;4;0;7599328;9523483;0.713564
+/root/Linear-Ordering-Problem/code/instances/N-t70d11xn_150;1;4;0;4588632;5723241;0.691782
+/root/Linear-Ordering-Problem/code/instances/N-t70d11xx_150;1;4;0;4884984;6079372;0.952620
+/root/Linear-Ordering-Problem/code/instances/N-t70f11xx_150;1;4;0;4015831;5039076;0.737062
+/root/Linear-Ordering-Problem/code/instances/N-t70l11xx_150;1;4;0;340276;426568;0.557379
+/root/Linear-Ordering-Problem/code/instances/N-t70n11xx_150;1;4;0;708698;933454;0.976096
+/root/Linear-Ordering-Problem/code/instances/N-t74d11xx_150;1;4;0;7420776;9283852;0.878720
+/root/Linear-Ordering-Problem/code/instances/N-t75d11xx_150;1;4;0;7630695;9519412;0.996040
+/root/Linear-Ordering-Problem/code/instances/N-t75e11xx_150;1;4;0;32207248;40860036;0.648422
+/root/Linear-Ordering-Problem/code/instances/N-t75k11xx_150;1;4;0;1179477;1520137;0.565859
+/root/Linear-Ordering-Problem/code/instances/N-t75n11xx_150;1;4;0;1315463;1696701;0.819610
+/root/Linear-Ordering-Problem/code/instances/N-tiw56n54_150;1;4;0;676518;819717;0.711759
+/root/Linear-Ordering-Problem/code/instances/N-tiw56n58_150;1;4;0;915336;1138432;0.726192
+/root/Linear-Ordering-Problem/code/instances/N-tiw56n62_150;1;4;0;1285441;1596066;0.638123
+/root/Linear-Ordering-Problem/code/instances/N-tiw56n66_150;1;4;0;1664444;2073129;0.737775
+/root/Linear-Ordering-Problem/code/instances/N-tiw56n67_150;1;4;0;1926677;2337347;0.730249
+/root/Linear-Ordering-Problem/code/instances/N-tiw56n72_150;1;4;0;3334262;4085176;0.707168
+/root/Linear-Ordering-Problem/code/instances/N-tiw56r54_150;1;4;0;766440;941641;0.722070
+/root/Linear-Ordering-Problem/code/instances/N-tiw56r58_150;1;4;0;960133;1196962;0.832220
+/root/Linear-Ordering-Problem/code/instances/N-tiw56r66_150;1;4;0;1537822;1907222;0.711244
+/root/Linear-Ordering-Problem/code/instances/N-tiw56r67_150;1;4;0;1648917;2032057;0.797613
+/root/Linear-Ordering-Problem/code/instances/N-tiw56r72_150;1;4;0;2246380;2768632;0.682050
