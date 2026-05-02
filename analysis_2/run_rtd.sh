@@ -5,6 +5,7 @@
 # =============================================================
 
 set -e
+export LC_ALL=C
 
 BASE="$(cd "$(dirname "$0")/.." && pwd)"
 CODE_DIR="$BASE/code"
