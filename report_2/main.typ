@@ -182,7 +182,8 @@ where $overline(t_"VND")$ is the average computation time of a full VND run on i
 
 == Implementation
 
-The solver is written in C, compiled with GCC and `-O3`. Because the full experimental campaign (39 instances $times$ 2 algorithms + 100 RTD runs) would have taken several days on a laptop, all measurements were carried out on a dedicated DigitalOcean Droplet (2 vCPU, Ubuntu 24.04) using a `tmux` session for persistence. Both SA and ACO reuse the VND, delta evaluation functions and instance reader from the first exercise. The random number generator is the same pseudo-random generator from Numerical Recipes used throughout the project. Seeds can be set via the `--seed` command-line flag to allow reproducible runs.
+The solver is written in C, compiled with GCC and `-O3`. Because the making all experimental would have taken several days on a laptop, all measurements were made using a dedicated DigitalOcean Droplet (2 vCPU, Ubuntu 24.04) using a `tmux` session for persistence. Both SA and ACO reuse the VND, delta evaluation functions and instance reader from the first exercise. The random number generator is the same pseudo-random generator used in the entire project. 
+Seeds can be set via the `--seed` command-line flag to allow reproducible runs.
 
 == Evaluation metric
 
@@ -192,9 +193,7 @@ $ "RPD" = frac("BestKnown" - "FinalCost", "BestKnown") times 100 $
 
 Lower is better. An RPD of 0 means we matched the best-known solution.
 
-= Results and Analysis
-
-== Exercise 2.1 — SLS Results on Size 150 Instances
+= Exercise 2.1 — SLS Results on Size 150 Instances
 
 @tab:results_sls reports the main results for both SLS algorithms across all 39 instances of size 150, together with the best VND configuration (`VND-TIE`) from Exercise 1 used as a baseline.
 
@@ -212,26 +211,22 @@ Lower is better. An RPD of 0 means we matched the best-known solution.
   caption: [Average RPD (%) over all 39 size-150 instances for each SLS algorithm and the best VND baseline from Exercise 1.]
 ) <tab:results_sls>
 
-@fig:rpd_comparison and @fig:boxplot summarise the same information graphically.
+@fig:rpd_comparison summarise the same information graphically.
 
 #figure(
-  image("plots/plot1_rpd_comparison.png", width: 80%),
+  image("plots/plot1_rpd_comparison.png", width: 50%),
   caption: [Average RPD (%) for the two SLS algorithms and the VND-TIE baseline from Exercise 1. Error bars represent one standard deviation.]
 ) <fig:rpd_comparison>
 
-#figure(
-  image("plots/plot3_boxplot.png", width: 70%),
-  caption: [Distribution of RPD values across the 39 size-150 instances for each algorithm.]
-) <fig:boxplot>
 
-=== Correlation Plot
+== Correlation Plot
 
-@fig:correlation plots, for each of the 39 instances, the SA RPD on the $x$-axis against the ACO RPD on the $y$-axis. Points above the diagonal indicate that SA produced a better solution than ACO on that instance; points below would indicate the opposite.
+@fig:correlation plots, for each of the 39 instances, the SA RPD on the $x$-axis against the ACO RPD on the $y$-axis. 
 
 #figure(
-  image("plots/plot2_correlation.png", width: 65%),
+  image("plots/plot2_correlation.png", width: 40%),
   caption: [
-    Correlation plot of RPD values: SA ($x$-axis) vs ACO ($y$-axis). Each point is one size-150 instance. The dashed line is $y = x$. Points below the line favour ACO; points above favour SA.
+    Correlation plot of RPD values: SA ($x$-axis) vs ACO ($y$-axis). Each point is one size-150 instance. The dashed line is $y = x$. Points below the line favour ACO; points above favour SA; points on the line same result for two SLS.
   ]
 ) <fig:correlation>
 
@@ -242,17 +237,13 @@ Lower is better. An RPD of 0 means we matched the best-known solution.
   caption: [Per-instance RPD (%) for SA and ACO. Instances are ordered by increasing SA RPD.]
 ) <fig:per_instance>
 
-=== Observations
+== Observations
 
-The numerical results lead to three observations.
+SA has the lowest average RPD at 0.435% (SD = 0.160), about half of what ACO achieves (0.910%, SD = 0.193). Both are well below the VND-TIE baseline from Exercise 1 (1.690%), which was expected since VND stops at the first local optimum after less than half a second, while the SLS methods search for over six minutes.
 
-First, *Simulated Annealing is the strongest method*: it reaches an average RPD of 0.435% with a small standard deviation of 0.160 percentage points. ACO is roughly twice as far from the best-known solutions on average (0.910%) and is also slightly more dispersed.
+What is more interesting is how consistent the gap is. In @fig:correlation, every single point lies above the diagonal: SA beats ACO on all 39 instances, not just on average. @fig:per_instance confirms this -- the SA curve stays below the ACO curve everywhere. The difference between the two is not driven by a few easy or hard instances; it is a systematic effect across the whole benchmark.
 
-Second, *both SLS methods clearly improve on plain VND*. The VND-TIE baseline from Exercise 1 stops at the first VND local optimum and reaches an average RPD of 1.690%, which is about 4 times worse than SA and about 2 times worse than ACO. This was expected: the SLS methods use 366.72 s per instance whereas VND finishes in less than half a second, but the experiment confirms that the extra time budget is effectively converted into solution quality.
-
-Third, the *advantage of SA over ACO is highly consistent*: in @fig:correlation every point lies above the diagonal, and in @fig:per_instance the SA curve is below the ACO curve on every single one of the 39 instances. There is no instance where ACO outperforms SA. This means the average RPD difference is not driven by a few outliers but is a systematic effect across the whole benchmark.
-
-=== Statistical Tests
+== Statistical Tests
 
 We apply the Wilcoxon signed-rank test at significance level $alpha = 0.05$ to determine whether the differences observed above are statistically significant #cite(<wiki_wilcoxon>).
 
@@ -273,55 +264,59 @@ We apply the Wilcoxon signed-rank test at significance level $alpha = 0.05$ to d
 All three differences are significant at $alpha = 0.05$ with $p$-values numerically indistinguishable from zero (the Wilcoxon statistic $W = 0$ for both SA-vs-ACO and SA-vs-VND, meaning that on every paired instance the algorithm on the left was strictly better). We can therefore confidently rank the three approaches as $"SA" prec "ACO" prec "VND-TIE"$ with respect to RPD.
 
 
-== Exercise 2.1 — Run-Time Distributions
+= Run-Time Distributions
 
-Run-time distributions (RTDs) measure how the probability of finding a solution of a given quality evolves over time. For each algorithm, we ran 25 independent repetitions on the first two instances of size 150 (`N-be75eec_150` and `N-be75np_150`), with a cut-off time of $10 times t_"max" approx 3667$ s. The target solution quality was set to within 0.5% of the best-known solution:
+For each algorithm, we ran 25 independent repetitions on the first two instances of size 150 (`N-be75eec_150` and `N-be75np_150`), with a cut-off time of $10 times t_"max" approx 3667$ s.
 
-$ "target" = "BestKnown" times (1 - 0.005) $
+Ideally, an RTD curve shows $P("solve")$ as a function of elapsed time, which requires the solver to periodically log the quality of its current best solution during the run. Our implementation only records the final solution once the time budget is exhausted, so we cannot plot a meaningful $P("solve")$ curve over time. What we can do is compare the _distribution of final solution qualities_ across the 25 seeds and compute the fraction of runs that reached a given target at the end. This is equivalent to reading the rightmost point of the RTD curve and gives us the success rate at $t = t_"cutoff"$.
 
-@tab:rtd_success summarises the empirical success rates obtained at the cut-off, and @fig:rtd_combined shows the RTD curves side by side for the two instances.
+We consider three target levels: RPD $lt.eq$ 0.5%, RPD $lt.eq$ 0.25%, and RPD $lt.eq$ 0.1% from the best-known solution.
 
 #figure(
   table(
-    columns: (1.6fr, 1fr, 1fr, 1fr),
+    columns: (1.5fr, 0.8fr, 1fr, 1fr, 1fr),
     inset: 6pt,
-    align: (left, center, center, center),
+    align: (left, center, center, center, center),
     fill: (x, y) => if y == 0 { luma(210) } else if calc.odd(y) { luma(248) },
-    [*Instance*], [*Algorithm*], [*Success rate (RPD $lt.eq$ 0.5%)*], [*Mean RPD (%)*],
-    [N-be75eec_150], [SA],  [60%], [0.431],
-    [N-be75eec_150], [ACO], [12%], [0.571],
-    [N-be75np_150],  [SA],  [64%], [0.458],
-    [N-be75np_150],  [ACO], [12%], [0.610],
+    [*Instance*], [*Algo*], [*$lt.eq$ 0.5%*], [*$lt.eq$ 0.25%*], [*$lt.eq$ 0.1%*],
+    [N-be75eec_150], [SA],  [60%], [20%], [0%],
+    [N-be75eec_150], [ACO], [12%], [0%],  [0%],
+    [N-be75np_150],  [SA],  [64%], [0%],  [0%],
+    [N-be75np_150],  [ACO], [12%], [0%],  [0%],
   ),
-  caption: [Empirical success rates of SA and ACO over 25 independent runs on the first two size-150 instances. The target quality is RPD $lt.eq$ 0.5%.]
+  caption: [Fraction of the 25 runs reaching each quality target at the cut-off ($approx 3667$ s).]
 ) <tab:rtd_success>
 
+@fig:rtd_boxplot shows the distribution of final RPD values across the 25 seeds for each combination of instance and algorithm. @fig:rtd_success_rates presents the success rates from @tab:rtd_success as a bar chart.
+
 #figure(
-  image("plots/plot6_rtd_combined.png", width: 100%),
-  caption: [
-    Run-time distributions on the two first size-150 instances. Each curve shows the fraction of the 25 runs whose final solution is within 0.5% of the best known, as a function of the elapsed time.
-  ]
-) <fig:rtd_combined>
+  image("plots/plot4_rtd_boxplot.png", width: 85%),
+  caption: [Distribution of final RPD (%) across 25 seeds for SA and ACO on the two RTD instances. Each grey dot is one run. The dashed line marks the 0.5% target.]
+) <fig:rtd_boxplot>
 
-=== Observations
+#figure(
+  image("plots/plot5_rtd_success_rates.png", width: 90%),
+  caption: [Empirical success rates at three quality thresholds (0.5%, 0.25%, 0.1% from best-known) over 25 runs.]
+) <fig:rtd_success_rates>
 
-The two instances behave very similarly, which suggests that the trends below are robust rather than instance-specific.
+== Observations
 
-The RTD curves are essentially flat at zero until the very end of the budget and then jump to their final value. This is a consequence of our implementation choice: both algorithms only report their final solution at the end of the run, so the RTD effectively reduces to the empirical *success rate at the cut-off*. With this caveat in mind, the comparison is still informative: SA reaches the 0.5% target in roughly 60-64% of the runs, whereas ACO reaches it only in 12% of the runs on both instances. This is consistent with the per-instance results from @tab:results_sls — SA's average RPD is well below 0.5% while ACO's is near 0.9%.
+The box plots in @fig:rtd_boxplot show a clear gap between the two algorithms. SA's median RPD sits around 0.44--0.47% on both instances, with several runs going as low as 0.22%. ACO's median is higher (0.58--0.62%) and the distribution is more concentrated above the 0.5% line. The two instances produce similar distributions, so this is not an instance-specific effect.
 
-If the target is tightened to 0.25% from the best-known, SA still solves 20% of the runs on `N-be75eec_150` while ACO never reaches it; at 0.1% neither algorithm succeeds within the budget. This indicates that solving size-150 instances to near-optimality remains hard even with one hour of computation per run, and motivates the use of additional intensification or longer time budgets for higher-quality requirements.
+The success rate chart (@fig:rtd_success_rates) puts numbers on this gap. At the 0.5% threshold, SA succeeds in 60--64% of the runs while ACO only reaches it 12% of the time. When we tighten the target to 0.25%, SA still manages 20% on `N-be75eec_150`, but ACO never gets there. At 0.1%, neither algorithm succeeds within the budget. This last point is interesting: even with nearly an hour of computation per run, getting within 0.1% of the best-known remains out of reach, which gives a sense of how hard these instances still are for these methods.
 
+The wider sprea d of SA toward lower RPD values suggests that SA explores the search space more effectively than ACO in this time budget. ACO's tighter distribution probably reflects the small number of pheromone-update cycles that fit within the budget, since each ant has to run a full VND before the colony can learn anything.
 
 
 = Conclusion
 
-We have implemented and evaluated two stochastic local search algorithms for the Linear Ordering Problem: a Simulated Annealing with insert moves and an automatically calibrated temperature schedule, and a MAX--MIN Ant System using VND-TEI as a per-ant local search. Both build on the VND machinery from the first implementation exercise and share the same time budget $t_"max" approx 367$ s per instance, calibrated so that each SLS run is roughly equivalent to 500 successive VND restarts.
+We implemented two SLS algorithms for the Linear Ordering Problem: Simulated Annealing (SA) with insert moves and automatic temperature calibration, and a MAX--MIN Ant System (MMAS) where each ant's solution is refined by VND-TEI. Both reuse the VND from the first exercise and run for $t_"max" approx 367$ s per instance (500 $times$ the average VND time).
 
-On the 39 LOP instances of size 150, *Simulated Annealing was the clear winner* with an average RPD of 0.435% against 0.910% for ACO. Both methods strongly improve over plain VND-TIE from Exercise 1, which has an average RPD of 1.690%. The Wilcoxon signed-rank tests confirm that all pairwise differences are highly significant, and the per-instance comparison shows that SA dominates ACO on every single instance — there is no problem in the benchmark on which ACO is even tied with SA. The run-time distribution analysis on two representative instances reinforces this conclusion: at the 0.5% target, SA reaches the target in roughly 60% of the runs whereas ACO only reaches it in 12% of them.
+On the 39 instances of size 150, SA reached an average RPD of 0.435%, ACO 0.910%, and VND-TIE from Exercise 1 sat at 1.690%. All pairwise differences are statistically significant (Wilcoxon, $p < 10^(-7)$). SA beat ACO on every single instance, not just on average. The 25-seed experiments on two instances showed that SA reaches the 0.5% target in about 60% of the runs, ACO only in 12%.
 
-Two reasons probably explain ACO's weaker performance in this setup. First, each ant performs a full VND descent, which is expensive at $n = 150$ and limits the number of construction-update cycles that fit in the time budget; the colony only manages a handful of pheromone updates. Second, the construction probabilities use the row-sum heuristic with $beta = 3$, which is already a strong attractor and may leave too little room for the pheromone to push the colony toward genuinely different regions. SA, on the other hand, performs millions of cheap random insert moves and benefits from the automatic temperature calibration, which removes the need for any per-instance tuning.
+ACO's weaker performance probably comes from the cost of running VND inside every ant. At $n = 150$, each VND call takes close to a second, so the colony only gets through a handful of construct-update cycles in the time budget. The pheromone matrix barely has time to converge on anything useful. SA does not have this problem: individual insert moves are cheap, and it can evaluate millions of them in the same time.
 
-Overall, for this size of LOP instance and this time budget, *we would recommend Simulated Annealing*: it is simpler, has fewer parameters, calibrates itself, and consistently produces the best solutions of the three methods compared in this report.
+For this instance size and time budget, SA is the better choice. It is simpler to implement, has fewer parameters to tune (the temperature calibrates itself), and it produced the best results across the board.
 
 
 

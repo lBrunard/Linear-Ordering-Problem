@@ -126,7 +126,7 @@ if (all(c("SA", "ACO") %in% colnames(corr_wide))) {
     annotate("text", x = max_val * 0.95, y = max_val * 0.05,
              label = "Below line = ACO better",
              hjust = 1, size = 3, colour = "grey40") +
-    annotate("text", x = max_val * 0.05, y = max_val * 0.95,
+    annotate("text", x = (max_val * 0.025), y = max_val * 0.95,
              label = "Above line = SA better",
              hjust = 0, size = 3, colour = "grey40") +
     theme_clean
@@ -162,7 +162,7 @@ cat("Saved plot3_boxplot.png\n")
 
 
 # ==============================================================
-#  PLOT 4 & 5 — Run-Time Distributions (RTD)
+#  PLOT 4 — RTD: box plot of final RPD across 25 seeds
 # ==============================================================
 
 rtd_file <- "results_2/rtd_results.csv"
@@ -176,112 +176,66 @@ if (file.exists(rtd_file)) {
   rtd$BestKnown <- as.numeric(rtd$BestKnown)
   rtd$RPD <- (rtd$BestKnown - rtd$FinalCost) / rtd$BestKnown * 100
 
-  instances_rtd <- unique(rtd$Instance)
-  target_pct <- 0.5  # target: within 0.5% of best-known
+  # Nice instance labels
+  rtd$InstanceShort <- gsub("N-", "", rtd$InstanceBase)
 
-  for (idx in seq_along(instances_rtd)) {
-    inst <- instances_rtd[idx]
-    inst_data <- rtd %>% filter(Instance == inst)
+  p4 <- ggplot(rtd, aes(x = Algo, y = RPD, fill = Algo)) +
+    geom_boxplot(width = 0.5, outlier.size = 1.5) +
+    geom_jitter(width = 0.15, size = 1, alpha = 0.4, colour = "grey30") +
+    facet_wrap(~ InstanceBase, ncol = 2) +
+    scale_fill_manual(values = algo_colours, name = "Algorithm") +
+    geom_hline(yintercept = 0.5, linetype = "dashed", colour = "grey50",
+               linewidth = 0.5) +
+    annotate("text", x = 2.4, y = 0.52, label = "0.5% target",
+             size = 2.8, colour = "grey40", hjust = 1) +
+    labs(x = NULL, y = "RPD (%)") +
+    theme_clean +
+    theme(strip.text = element_text(size = 10, face = "italic"))
 
-    # for each algo, sort runs by time and compute empirical CDF
-    # a run "succeeds" if RPD <= target_pct
-    rtd_plot_data <- data.frame()
+  ggsave(file.path(OUT, "plot4_rtd_boxplot.png"), p4,
+         width = 8, height = 4.5, dpi = 150)
+  cat("Saved plot4_rtd_boxplot.png\n")
 
-    for (alg in c("SA", "ACO")) {
-      alg_data <- inst_data %>%
-        filter(Algo == alg) %>%
-        mutate(Success = RPD <= target_pct) %>%
-        arrange(Time)
 
-      n_runs <- nrow(alg_data)
-      if (n_runs == 0) next
+  # ==============================================================
+  #  PLOT 5 — RTD: success rate bar chart at multiple thresholds
+  # ==============================================================
 
-      # build empirical RTD: P(solve) as function of time
-      # only successful runs contribute
-      success_times <- alg_data %>% filter(Success) %>% pull(Time) %>% sort()
-      n_success <- length(success_times)
+  targets <- c(0.5, 0.25, 0.1)
+  success_data <- data.frame()
 
-      if (n_success == 0) {
-        # no successes: flat line at 0
-        rtd_plot_data <- bind_rows(rtd_plot_data, data.frame(
-          Algo = alg, Time = c(0, max(alg_data$Time)),
-          P_solve = c(0, 0), Instance = inst
-        ))
-      } else {
-        # build step function
-        times <- c(0, success_times)
-        probs <- c(0, seq_len(n_success) / n_runs)
-        rtd_plot_data <- bind_rows(rtd_plot_data, data.frame(
-          Algo = alg, Time = times, P_solve = probs, Instance = inst
-        ))
-      }
-    }
-
-    if (nrow(rtd_plot_data) == 0) next
-
-    p_rtd <- ggplot(rtd_plot_data, aes(x = Time, y = P_solve,
-                                        colour = Algo)) +
-      geom_step(linewidth = 1.0) +
-      scale_colour_manual(values = algo_colours, name = "Algorithm") +
-      scale_y_continuous(limits = c(0, 1),
-                         labels = scales::percent_format()) +
-      labs(x = "Time (s)",
-           y = sprintf("P(solve) — target: %.1f%% from BK", target_pct),
-           subtitle = inst) +
-      theme_clean +
-      theme(plot.subtitle = element_text(size = 10, face = "italic"))
-
-    fname <- sprintf("plot%d_rtd_instance%d.png", idx + 3, idx)
-    ggsave(file.path(OUT, fname), p_rtd,
-           width = 7, height = 4.5, dpi = 150)
-    cat(sprintf("Saved %s\n", fname))
+  for (tgt in targets) {
+    tmp <- rtd %>%
+      group_by(InstanceBase, Algo) %>%
+      summarise(
+        Target = sprintf("RPD <= %.2f%%", tgt),
+        SuccessRate = mean(RPD <= tgt) * 100,
+        .groups = "drop"
+      )
+    success_data <- bind_rows(success_data, tmp)
   }
 
-  # combined RTD plot (both instances side by side)
-  if (length(instances_rtd) >= 2) {
-    all_rtd_data <- data.frame()
-    for (inst in instances_rtd) {
-      inst_data <- rtd %>% filter(Instance == inst)
-      for (alg in c("SA", "ACO")) {
-        alg_data <- inst_data %>%
-          filter(Algo == alg) %>%
-          mutate(Success = RPD <= target_pct) %>%
-          arrange(Time)
-        n_runs <- nrow(alg_data)
-        if (n_runs == 0) next
-        success_times <- alg_data %>% filter(Success) %>% pull(Time) %>% sort()
-        n_success <- length(success_times)
-        if (n_success == 0) {
-          all_rtd_data <- bind_rows(all_rtd_data, data.frame(
-            Algo = alg, Time = c(0, max(alg_data$Time)),
-            P_solve = c(0, 0), Instance = inst
-          ))
-        } else {
-          times <- c(0, success_times)
-          probs <- c(0, seq_len(n_success) / n_runs)
-          all_rtd_data <- bind_rows(all_rtd_data, data.frame(
-            Algo = alg, Time = times, P_solve = probs, Instance = inst
-          ))
-        }
-      }
-    }
+  success_data$Target <- factor(success_data$Target,
+    levels = c("RPD <= 0.50%", "RPD <= 0.25%", "RPD <= 0.10%"))
 
-    p_rtd_combined <- ggplot(all_rtd_data,
-                              aes(x = Time, y = P_solve, colour = Algo)) +
-      geom_step(linewidth = 1.0) +
-      facet_wrap(~ Instance, ncol = 2, scales = "free_x") +
-      scale_colour_manual(values = algo_colours, name = "Algorithm") +
-      scale_y_continuous(limits = c(0, 1),
-                         labels = scales::percent_format()) +
-      labs(x = "Time (s)",
-           y = sprintf("P(solve) — target: %.1f%% from BK", target_pct)) +
-      theme_clean +
-      theme(strip.text = element_text(size = 9, face = "italic"))
+  p5 <- ggplot(success_data,
+               aes(x = Target, y = SuccessRate, fill = Algo)) +
+    geom_col(position = position_dodge(width = 0.7), width = 0.6) +
+    geom_text(aes(label = ifelse(SuccessRate > 0,
+                                 sprintf("%.0f%%", SuccessRate), "")),
+              position = position_dodge(width = 0.7),
+              vjust = -0.4, size = 3) +
+    facet_wrap(~ InstanceBase, ncol = 2) +
+    scale_fill_manual(values = algo_colours, name = "Algorithm") +
+    scale_y_continuous(limits = c(0, 105),
+                       labels = function(x) paste0(x, "%")) +
+    labs(x = "Quality target", y = "Success rate (out of 25 runs)") +
+    theme_clean +
+    theme(strip.text = element_text(size = 10, face = "italic"))
 
-    ggsave(file.path(OUT, "plot6_rtd_combined.png"), p_rtd_combined,
-           width = 11, height = 4.5, dpi = 150)
-    cat("Saved plot6_rtd_combined.png\n")
-  }
+  ggsave(file.path(OUT, "plot5_rtd_success_rates.png"), p5,
+         width = 9, height = 4.5, dpi = 150)
+  cat("Saved plot5_rtd_success_rates.png\n")
 
 } else {
   cat("No RTD results found. Skipping RTD plots.\n")

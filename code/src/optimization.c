@@ -42,6 +42,7 @@
 
 
 long int **CostMat;
+FILE *rtdLogFile = NULL;
 
 typedef struct{
     int index;
@@ -259,6 +260,9 @@ long long int simulatedAnnealing(long int *s, double timelimit){
     double coolingRate = 0.99;
     int iterPerTemp = PSize * 10; //Moves per temp level
 
+    /* RTD logging: track next second to log */
+    double nextLogTime = 1.0;
+
     /*Main loop*/
     while (elapsed_time(REAL) < timelimit){
         for(int iter = 0; iter < iterPerTemp; iter++){
@@ -281,10 +285,25 @@ long long int simulatedAnnealing(long int *s, double timelimit){
             }
         }
         T *= coolingRate;
+
+        /* RTD: log best cost every second */
+        if (rtdLogFile != NULL) {
+            double now = elapsed_time(REAL);
+            while (nextLogTime <= now) {
+                fprintf(rtdLogFile, "%.2f;%lld\n", nextLogTime, bestCost);
+                nextLogTime += 1.0;
+            }
+        }
     }
     memcpy(s, bestSol, PSize * sizeof(long int));
     free(bestSol);
     bestCost = vnd(s, 0);
+
+    /* Log the final VND-improved cost */
+    if (rtdLogFile != NULL) {
+        fprintf(rtdLogFile, "%.2f;%lld\n", elapsed_time(REAL), bestCost);
+    }
+
     return bestCost;
 }
 
@@ -314,6 +333,7 @@ long long int aco(long int *s, double timeLimit){
     double *probs = (double *)malloc(PSize * sizeof(double));
 
     long long int bestCost = 0;
+    double nextLogTime = 1.0; /* RTD logging */
 
     while(elapsed_time(REAL) < timeLimit){
         long long int iterBestCost = 0;
@@ -395,7 +415,16 @@ long long int aco(long int *s, double timeLimit){
                     tau[s[p]][s[q]] = tauMax;
             }
         }
-        
+
+        /* RTD: log best cost periodically */
+        if (rtdLogFile != NULL) {
+            double now = elapsed_time(REAL);
+            while (nextLogTime <= now) {
+                fprintf(rtdLogFile, "%.2f;%lld\n", nextLogTime, bestCost);
+                nextLogTime += 1.0;
+            }
+        }
+
     }
 
     /*

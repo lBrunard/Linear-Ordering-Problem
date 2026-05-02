@@ -27,6 +27,9 @@
  */
 extern long int **CostMat;
 
+/* RTD logging: when non-NULL, SA/ACO periodically write "time;bestCost\n" */
+extern FILE *rtdLogFile;
+
 int compareElement(const void *ptr1, const void *ptr2);
 
 /* Compute f(s) = sum_{i<j} CostMat[s[i]][s[j]]. O(n^2). */

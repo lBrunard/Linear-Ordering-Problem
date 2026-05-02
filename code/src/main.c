@@ -20,6 +20,7 @@ int vnd_ordering = -1; // -1=plain LS, 0=VND-TEI, 1=VND-TIE
 int algorithm = 0; // 0 = LS/VND, 1 = SimAnnealing, 2 = ACO
 double timeLimit = 0.0;
 int userSeed = -1;
+char *rtdLogPath = NULL;
 int verbose      = 0;
 
 void readOpts(int argc, char **argv) {
@@ -41,11 +42,12 @@ void readOpts(int argc, char **argv) {
         {"time",      required_argument, 0, 'T'},
         {"seed",      required_argument, 0, 'S'},
         {"instance",  required_argument, 0, 'i'},
+        {"rtd-log",   required_argument, 0, 'L'},
         {"verbose",   no_argument,       0, 'v'},
         {0, 0, 0, 0}
     };
 
-    while ((opt = getopt_long(argc, argv, "i:fbtencrv12saT:S:", long_options, &option_index)) != -1) {
+    while ((opt = getopt_long(argc, argv, "i:fbtencrv12saT:S:L:", long_options, &option_index)) != -1) {
         switch (opt) {
             case 'i': FileName      = strdup(optarg);   break;
             case 'f': pivot_rule    = 0;                break;
@@ -61,6 +63,7 @@ void readOpts(int argc, char **argv) {
             case 'a': algorithm     = 2;                break;
             case 'T': timeLimit     = atof(optarg);     break;
             case 'S': userSeed      = atoi(optarg);     break;
+            case 'L': rtdLogPath    = strdup(optarg);    break;
             case 'v': verbose       = 1;                break;
             default:
                 fprintf(stderr,
@@ -115,6 +118,16 @@ int main(int argc, char **argv) {
     }
 
 
+    /* Open RTD log file if requested */
+    if (rtdLogPath != NULL) {
+        rtdLogFile = fopen(rtdLogPath, "w");
+        if (!rtdLogFile) {
+            fprintf(stderr, "Error: cannot open RTD log file %s\n", rtdLogPath);
+            exit(1);
+        }
+        fprintf(rtdLogFile, "Time;BestCost\n");
+    }
+
     start_timers();
 
     if (algorithm == 1) {
@@ -161,6 +174,11 @@ int main(int argc, char **argv) {
         printf("%s;%d;%d;%d;%lld;%lld;%.6f\n",
                FileName, init_method, algo_id, pivot_rule,
                initialCost, finalCost, duration);
+    }
+
+    if (rtdLogFile != NULL) {
+        fclose(rtdLogFile);
+        rtdLogFile = NULL;
     }
 
     free(currentSolution);
